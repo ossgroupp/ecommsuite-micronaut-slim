@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.ltmg
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [amazon-api-gateway, annotation-api, app-name, asciidoctor, aws-cdk, aws-lambda, aws-parameter-store, aws-secrets-manager, aws-v2-sdk, cache-hazelcast, camunda-zeebe, consul, discovery-consul, dynamodb, elasticsearch, email-amazon-ses, email-sendgrid, email-template, flyway, gradle, graphql, http-client, java, java-application, junit, kubernetes-reactor-client, localstack, logback, lombok, management, micrometer, micrometer-annotation, micrometer-atlas, micrometer-cloudwatch, micrometer-datadog, micrometer-dynatrace, micrometer-elastic, micrometer-ganglia, micrometer-graphite, micrometer-prometheus, micrometer-statsd, micronaut-build, multi-tenancy, nats, netflix-hystrix, netflix-ribbon, openapi, problem-json, reactor, reactor-http-client, readme, rss, security, security-annotations, security-jwt, security-oauth2, security-session, serialization-bson, shade, testcontainers, toml, toml-build, tracing-opentelemetry-annotations, tracing-opentelemetry-exporter-logging, tracing-opentelemetry-exporter-otlp, tracing-opentelemetry-exporter-zipkin, tracing-opentelemetry-http, tracing-opentelemetry-xray, tracing-opentelemetry-zipkin, views-handlebars, x86]

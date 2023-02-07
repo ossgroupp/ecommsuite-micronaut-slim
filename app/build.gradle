@@ -1,0 +1,123 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.7.0"
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+}
+
+version = "0.1"
+group = "com.ltmg"
+
+apply from: "gradle/asciidoc.gradle"
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.micrometer:micronaut-micrometer-annotation")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.tracing:micronaut-tracing-opentelemetry-annotation")
+    implementation("info.novatec:micronaut-zeebe-client-feature:1.10.0")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut.aws:micronaut-aws-apigateway")
+    implementation("io.micronaut.aws:micronaut-aws-parameter-store")
+    implementation("io.micronaut.aws:micronaut-aws-sdk-v2")
+    implementation("io.micronaut.aws:micronaut-aws-secretsmanager")
+    implementation("io.micronaut.cache:micronaut-cache-hazelcast")
+    implementation("io.micronaut.discovery:micronaut-discovery-client")
+    implementation("io.micronaut.elasticsearch:micronaut-elasticsearch")
+    implementation("io.micronaut.email:micronaut-email-amazon-ses")
+    implementation("io.micronaut.email:micronaut-email-sendgrid")
+    implementation("io.micronaut.email:micronaut-email-template")
+    implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.graphql:micronaut-graphql")
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-client-reactor")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-atlas")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-cloudwatch")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-datadog")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-dynatrace")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-elastic")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-ganglia")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-graphite")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-statsd")
+    implementation("io.micronaut.multitenancy:micronaut-multitenancy")
+    implementation("io.micronaut.nats:micronaut-nats")
+    implementation("io.micronaut.netflix:micronaut-netflix-hystrix")
+    implementation("io.micronaut.netflix:micronaut-netflix-ribbon")
+    implementation("io.micronaut.problem:micronaut-problem-json")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    implementation("io.micronaut.rss:micronaut-rss")
+    implementation("io.micronaut.security:micronaut-security")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.security:micronaut-security-oauth2")
+    implementation("io.micronaut.security:micronaut-security-session")
+    implementation("io.micronaut.serde:micronaut-serde-bson")
+    implementation("io.micronaut.toml:micronaut-toml")
+    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-http")
+    implementation("io.micronaut.views:micronaut-views-handlebars")
+    implementation("io.opentelemetry:opentelemetry-exporter-logging")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
+    implementation("io.opentelemetry:opentelemetry-extension-aws")
+    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-aws-sdk-2.2")
+    implementation platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:1.14.0-alpha")
+    implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("software.amazon.awssdk:dynamodb")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation("com.amazonaws:aws-java-sdk-core")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:localstack")
+    testImplementation("org.testcontainers:testcontainers")
+    implementation("io.micronaut:micronaut-validation")
+
+}
+
+
+application {
+    mainClass.set("com.ltmg.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("lambda_java")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.ltmg.*")
+    }
+}
+
+
+tasks.named("dockerfileNative") {
+    args(
+        "-XX:MaximumHeapSizePercent=80",
+        "-Dio.netty.allocator.numDirectArenas=0",
+        "-Dio.netty.noPreferDirect=true"
+    )
+}
+
+
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("io.micronaut:micronaut-jackson-databind"))
+            .using(module("io.micronaut.serde:micronaut-serde-bson:1.5.0"))
+        substitute(module("io.micronaut:micronaut-jackson-core"))
+            .using(module("io.micronaut.serde:micronaut-serde-bson:1.5.0"))
+    }
+}
+

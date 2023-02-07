@@ -1,0 +1,5 @@
+
+rootProject.name="ecommsuite-micronaut-slim"
+
+include("app")
+include("infra")

@@ -1,0 +1,67 @@
+hystrix.stream.enabled = false
+otel.exclusions = ['/health']
+nats.addresses = ['nats://localhost:4222']
+elasticsearch.httpHosts = 'http://localhost:9200,http://127.0.0.2:9200'
+hazelcast.network.addresses = "['121.0.0.1:5701']"
+consul.client.registration.enabled = true
+flyway.datasources.default.enabled = true
+
+[micronaut.metrics.export.elastic]
+enabled = true
+step = 'PT1M'
+
+[otel.traces]
+exporter = 'zipkin,otlp,logging'
+propagator = 'tracecontext, baggage, xray'
+
+[micronaut.metrics]
+export.cloudwatch.enabled = true
+enabled = true
+
+[micronaut.metrics.export.statsd]
+enabled = true
+flavor = 'datadog'
+host = 'localhost'
+port = 8125
+step = 'PT1M'
+
+[micronaut.metrics.export.atlas]
+enabled = true
+uri = 'http://localhost:7101/api/v1/publish'
+step = 'PT1M'
+
+[ribbon]
+VipAddress = 'test'
+ServerListRefreshInterval = 2000
+
+[micronaut.metrics.export.graphite]
+enabled = true
+host = 'localhost'
+port = 2004
+step = 'PT1M'
+
+[micronaut.security]
+authentication = 'session'
+token.jwt.signatures.secret.generator.secret = '${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}'
+
+[micronaut.metrics.export.datadog]
+enabled = true
+apiKey = '${DATADOG_APIKEY}'
+step = 'PT1M'
+
+[micronaut.metrics.export.ganglia]
+enabled = true
+protocolVersion = 3.1
+step = 'PT1M'
+
+[micronaut.metrics.export.prometheus]
+enabled = true
+descriptions = true
+step = 'PT1M'
+
+[micronaut.metrics.export.dynatrace]
+enabled = true
+apiToken = '${DYNATRACE_DEVICE_API_TOKEN}'
+uri = '${DYNATRACE_DEVICE_URI}'
+deviceId = '${DYNATRACE_DEVICE_ID}'
+step = 'PT1M'
